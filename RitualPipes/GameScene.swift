@@ -14,14 +14,17 @@ class GameScene: SKScene {
     
     var gridLayer: SKNode?
     var pipesLayer = SKNode()
-    var firstPipeCheckpoint: SKSpriteNode?
+    var currentPipeCheckpoint: SKSpriteNode?
     var pipeTip: SKSpriteNode?
     let pipeTipLinkShapeNode = SKShapeNode()
     var pipeTipLinkPath = CGPathCreateMutable()
     
     var currentLevel: Level!
     var currentLevelIdx = 0
+    var touchLocation = CGPointZero
     var dragAllowed = false
+    
+    var timer: NSTimer?
     
     override func didMoveToView(view: SKView) {
         
@@ -55,10 +58,10 @@ class GameScene: SKScene {
        
         if let touch = touches.first as UITouch? {
             
-            let touchLocation = touch.locationInNode(pipesLayer)
+            touchLocation = touch.locationInNode(pipesLayer)
             let touchedNode = pipesLayer.nodeAtPoint(touchLocation)
             
-            dragAllowed = touchedNode == firstPipeCheckpoint!
+            dragAllowed = touchedNode == currentPipeCheckpoint!
             
             if dragAllowed {
                 
@@ -67,8 +70,30 @@ class GameScene: SKScene {
                 pipesLayer.addChild(pipeTip!)
                 
                 createPipeTipLinkPath()
+                
+                timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "timerUpdate", userInfo: nil, repeats: true)
             }
         }
+    }
+    
+    func timerUpdate() {
+        
+        let pipeCheckpoint = SKSpriteNode(texture: createPipeCheckpointTexture())
+        let (touchCol, touchRow) = convertPoint2(touchLocation)
+        pipeCheckpoint.position = pointForColumn(touchCol, row: touchRow)
+        pipesLayer.addChild(pipeCheckpoint)
+        
+        let pipePath = CGPathCreateMutable()
+        CGPathMoveToPoint(pipePath, nil, currentPipeCheckpoint!.position.x, currentPipeCheckpoint!.position.y)
+        CGPathAddLineToPoint(pipePath, nil, pipeCheckpoint.position.x, pipeCheckpoint.position.y)
+        
+        let pipeShapeNode = SKShapeNode(path: pipePath)
+        pipeShapeNode.lineWidth = pipeTipLinkShapeNode.lineWidth
+        pipeShapeNode.strokeColor = pipeTipLinkShapeNode.strokeColor
+        pipesLayer.addChild(pipeShapeNode)
+        
+        currentPipeCheckpoint = pipeCheckpoint
+        createPipeTipLinkPath()
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -77,7 +102,7 @@ class GameScene: SKScene {
             
             if dragAllowed {
                 
-                let touchLocation = touch.locationInNode(pipesLayer)
+                touchLocation = touch.locationInNode(pipesLayer)
                 let touchPreviousLocation = touch.previousLocationInNode(pipesLayer)
                 
                 let dX = touchLocation.x - touchPreviousLocation.x
@@ -93,10 +118,20 @@ class GameScene: SKScene {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
+        touchLocation = CGPointZero
+        
         if pipeTip != nil {
             pipeTip!.removeFromParent()
             pipeTipLinkShapeNode.path = CGPathCreateMutable()
         }
+        
+
+        if (timer != nil) {
+            timer?.invalidate()
+        }
+        
+        pipesLayer.removeAllChildren()
+        setupPipes()
     }
    
     override func update(currentTime: CFTimeInterval) {
@@ -114,9 +149,9 @@ class GameScene: SKScene {
             
             // Initial pipe checkpoint :)
             if pipeCheckpoint.order == 1 {
-                firstPipeCheckpoint = SKSpriteNode(texture: createPipeCheckpointTexture())
-                firstPipeCheckpoint!.position = pointForColumn(pipeCheckpoint.tile.column, row: pipeCheckpoint.tile.row)
-                pipesLayer.addChild(firstPipeCheckpoint!)
+                currentPipeCheckpoint = SKSpriteNode(texture: createPipeCheckpointTexture())
+                currentPipeCheckpoint!.position = pointForColumn(pipeCheckpoint.tile.column, row: pipeCheckpoint.tile.row)
+                pipesLayer.addChild(currentPipeCheckpoint!)
             }
         }
         
@@ -128,7 +163,7 @@ class GameScene: SKScene {
     func createPipeTipLinkPath() {
         
         pipeTipLinkPath = CGPathCreateMutable()
-        CGPathMoveToPoint(pipeTipLinkPath, nil, firstPipeCheckpoint!.position.x, firstPipeCheckpoint!.position.y)
+        CGPathMoveToPoint(pipeTipLinkPath, nil, currentPipeCheckpoint!.position.x, currentPipeCheckpoint!.position.y)
         CGPathAddLineToPoint(pipeTipLinkPath, nil, pipeTip!.position.x, pipeTip!.position.y)
         pipeTipLinkShapeNode.path = pipeTipLinkPath
     }
