@@ -16,6 +16,9 @@
 		7E47C69D1C5C0F510030429B /* Tile2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E47C69C1C5C0F510030429B /* Tile2D.swift */; };
 		7E47C69F1C5C0FD60030429B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E47C69E1C5C0FD60030429B /* Extensions.swift */; };
 		7E47C6A31C5C18300030429B /* PipeCheckpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E47C6A21C5C18300030429B /* PipeCheckpoint.swift */; };
+		7E47C6A81C5D0E5B0030429B /* move.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6A51C5D0D690030429B /* move.m4a */; };
+		7E47C6A91C5D0E5B0030429B /* right.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6A61C5D0D690030429B /* right.m4a */; };
+		7E47C6AA1C5D0E5B0030429B /* wrong.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6A71C5D0D690030429B /* wrong.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +33,9 @@
 		7E47C69C1C5C0F510030429B /* Tile2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile2D.swift; sourceTree = "<group>"; };
 		7E47C69E1C5C0FD60030429B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7E47C6A21C5C18300030429B /* PipeCheckpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PipeCheckpoint.swift; sourceTree = "<group>"; };
+		7E47C6A51C5D0D690030429B /* move.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = move.m4a; sourceTree = "<group>"; };
+		7E47C6A61C5D0D690030429B /* right.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = right.m4a; sourceTree = "<group>"; };
+		7E47C6A71C5D0D690030429B /* wrong.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = wrong.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +68,7 @@
 		7E47C67D1C5BFF400030429B /* RitualPipes */ = {
 			isa = PBXGroup;
 			children = (
+				7E47C6A41C5D052E0030429B /* Sounds */,
 				7E47C6991C5C0EBF0030429B /* Levels */,
 				7E47C6961C5C0D220030429B /* Models */,
 				7E47C6951C5C0D0D0030429B /* Views */,
@@ -106,6 +113,16 @@
 				7E47C69A1C5C0F2A0030429B /* level-1.txt */,
 			);
 			name = Levels;
+			sourceTree = "<group>";
+		};
+		7E47C6A41C5D052E0030429B /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				7E47C6A51C5D0D690030429B /* move.m4a */,
+				7E47C6A61C5D0D690030429B /* right.m4a */,
+				7E47C6A71C5D0D690030429B /* wrong.m4a */,
+			);
+			name = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +183,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E47C6A81C5D0E5B0030429B /* move.m4a in Resources */,
+				7E47C6A91C5D0E5B0030429B /* right.m4a in Resources */,
+				7E47C6AA1C5D0E5B0030429B /* wrong.m4a in Resources */,
 				7E47C68A1C5BFF400030429B /* Assets.xcassets in Resources */,
 				7E47C69B1C5C0F2A0030429B /* level-1.txt in Resources */,
 			);

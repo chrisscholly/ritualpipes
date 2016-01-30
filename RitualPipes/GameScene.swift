@@ -15,6 +15,7 @@ class GameScene: SKScene {
     var gridLayer: SKNode?
     var pipesLayer = SKNode()
     var currentPipeCheckpoint: SKSpriteNode?
+    var currentPipeCheckpointCounter = 0
     var pipeTip: SKSpriteNode?
     let pipeTipLinkShapeNode = SKShapeNode()
     var pipeTipLinkPath = CGPathCreateMutable()
@@ -25,6 +26,13 @@ class GameScene: SKScene {
     var dragAllowed = false
     
     var timer: NSTimer?
+    var prevTouchedCol: Int?, prevTouchedRow: Int?
+    
+    // Sounds
+    private let moveSound: SKAction = SKAction.playSoundFileNamed("move.m4a", waitForCompletion: false)
+    var moveSoundPlaying = false
+    private let rightSound: SKAction = SKAction.playSoundFileNamed("right.m4a", waitForCompletion: false)
+    private let wrongSound: SKAction = SKAction.playSoundFileNamed("wrong.m4a", waitForCompletion: false)
     
     override func didMoveToView(view: SKView) {
         
@@ -78,27 +86,50 @@ class GameScene: SKScene {
     
     func timerUpdate() {
         
-        let pipeCheckpoint = SKSpriteNode(texture: createPipeCheckpointTexture())
+        let nextModelPipeCheckpoint = self.nextModelPipeCheckpoint()
         let (touchCol, touchRow) = convertPoint2(touchLocation)
-        pipeCheckpoint.position = pointForColumn(touchCol, row: touchRow)
-        pipesLayer.addChild(pipeCheckpoint)
         
-        let pipePath = CGPathCreateMutable()
-        CGPathMoveToPoint(pipePath, nil, currentPipeCheckpoint!.position.x, currentPipeCheckpoint!.position.y)
-        CGPathAddLineToPoint(pipePath, nil, pipeCheckpoint.position.x, pipeCheckpoint.position.y)
-        
-        let pipeShapeNode = SKShapeNode(path: pipePath)
-        pipeShapeNode.lineWidth = pipeTipLinkShapeNode.lineWidth
-        pipeShapeNode.strokeColor = pipeTipLinkShapeNode.strokeColor
-        pipesLayer.addChild(pipeShapeNode)
-        
-        currentPipeCheckpoint = pipeCheckpoint
-        createPipeTipLinkPath()
+        if touchCol == nextModelPipeCheckpoint?.tile.column &&
+            touchRow == nextModelPipeCheckpoint?.tile.row {
+                
+                let pipeCheckpoint = SKSpriteNode(texture: createPipeCheckpointTexture())
+                pipeCheckpoint.position = pointForColumn(touchCol, row: touchRow)
+                pipesLayer.addChild(pipeCheckpoint)
+                
+                let pipePath = CGPathCreateMutable()
+                CGPathMoveToPoint(pipePath, nil, currentPipeCheckpoint!.position.x, currentPipeCheckpoint!.position.y)
+                CGPathAddLineToPoint(pipePath, nil, pipeCheckpoint.position.x, pipeCheckpoint.position.y)
+                
+                let pipeShapeNode = SKShapeNode(path: pipePath)
+                pipeShapeNode.lineWidth = pipeTipLinkShapeNode.lineWidth
+                pipeShapeNode.strokeColor = pipeTipLinkShapeNode.strokeColor
+                pipesLayer.addChild(pipeShapeNode)
+                
+                currentPipeCheckpoint = pipeCheckpoint
+                createPipeTipLinkPath()
+                currentPipeCheckpointCounter++
+                
+                self.runAction(rightSound)
+        } else {
+            reset()
+            self.runAction(wrongSound)
+        }
+    }
+    
+    func nextModelPipeCheckpoint() -> PipeCheckpoint? {
+        for pipeCheckpoint in currentLevel.pipeCheckpoints {
+            if pipeCheckpoint.order == currentPipeCheckpointCounter + 1 {
+                return pipeCheckpoint
+            }
+        }
+        return nil
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         if let touch = touches.first as UITouch? {
+            
+            let (touchCol, touchRow) = convertPoint2(touchLocation)
             
             if dragAllowed {
                 
@@ -112,20 +143,44 @@ class GameScene: SKScene {
                 pipeTip!.position.y += dY
                 
                 createPipeTipLinkPath()
+                
+                // Sound
+                if touchCol != prevTouchedCol || touchRow != prevTouchedRow {
+                    playMoveSound()
+                }
             }
+            
+            prevTouchedCol = touchCol
+            prevTouchedRow = touchRow
+        }
+    }
+    
+    func playMoveSound() {
+        if !moveSoundPlaying {
+            moveSoundPlaying = true
+            self.runAction(moveSound, completion: { completed in
+                
+                self.moveSoundPlaying = false
+            })
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
+        reset()
+    }
+    
+    func reset() {
         touchLocation = CGPointZero
+        dragAllowed = false
+        currentPipeCheckpointCounter = 0
         
         if pipeTip != nil {
             pipeTip!.removeFromParent()
             pipeTipLinkShapeNode.path = CGPathCreateMutable()
         }
         
-
+        
         if (timer != nil) {
             timer?.invalidate()
         }
@@ -148,7 +203,7 @@ class GameScene: SKScene {
         for pipeCheckpoint in pipeCheckpoints {
             
             // Initial pipe checkpoint :)
-            if pipeCheckpoint.order == 1 {
+            if pipeCheckpoint.order == 0 {
                 currentPipeCheckpoint = SKSpriteNode(texture: createPipeCheckpointTexture())
                 currentPipeCheckpoint!.position = pointForColumn(pipeCheckpoint.tile.column, row: pipeCheckpoint.tile.row)
                 pipesLayer.addChild(currentPipeCheckpoint!)
