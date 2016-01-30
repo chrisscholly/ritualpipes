@@ -14,6 +14,7 @@ class GameScene: SKScene {
     
     var gridLayer: SKNode?
     var pipesLayer = SKNode()
+    var levelPreviewLayer = SKNode()
     var currentPipeCheckpoint: SKSpriteNode?
     var currentPipeCheckpointCounter = 0
     var pipeTip: SKSpriteNode?
@@ -42,6 +43,9 @@ class GameScene: SKScene {
         pipesLayer.zPosition = 2
         self.addChild(pipesLayer)
         
+        levelPreviewLayer.zPosition = 3
+        self.addChild(levelPreviewLayer)
+        
         loadNextLevel()
     }
     
@@ -61,6 +65,24 @@ class GameScene: SKScene {
         
         pipesLayer.position = blocksLayerPosition
         setupPipes()
+        
+        levelPreviewLayer.position = blocksLayerPosition
+        setupLevelPreview()
+        
+        let repeatedIntroBlink = SKAction.repeatAction(SKAction.sequence([
+            SKAction.runBlock({
+                self.levelPreviewLayer.hidden = false
+            }),
+            SKAction.waitForDuration(0.23),
+            SKAction.runBlock({
+                self.levelPreviewLayer.hidden = true
+            }),
+            SKAction.waitForDuration(0.23)]), count: 3)
+        
+        self.runAction(repeatedIntroBlink, completion: { completed in
+            
+            self.userInteractionEnabled = true
+        })
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -148,9 +170,9 @@ class GameScene: SKScene {
             SKAction.runBlock({
                 self.pipesLayer.hidden = false
             }),
-            SKAction.waitForDuration(0.23)]), count: 2)
+            SKAction.waitForDuration(0.23)]), count: 3)
         
-        self.runAction(SKAction.group([repeatedWinBlink, rightSound]), completion: { completed in
+        self.runAction(SKAction.sequence([SKAction.group([repeatedWinBlink, rightSound]), SKAction.waitForDuration(0.7)]), completion: { completed in
             
             if self.currentLevelIdx >= 3 {
                 self.currentLevelIdx = 0
@@ -271,6 +293,40 @@ class GameScene: SKScene {
         pipesLayer.addChild(pipeTipLinkShapeNode)
     }
     
+    func setupLevelPreview() {
+        
+        if levelPreviewLayer.children.count > 0 {
+            levelPreviewLayer.removeAllChildren()
+        }
+        
+        var prevPipeCheckpoint: PipeCheckpoint? = nil
+        let sortedPipeCheckpoints = currentLevel.pipeCheckpoints.sort({ $0.order < $1.order })
+
+        for (idx, pipeCheckpoint) in sortedPipeCheckpoints.enumerate() {
+            if idx > 0 {
+                prevPipeCheckpoint = sortedPipeCheckpoints[idx-1]
+            }
+            
+            let pipeCheckpointSprite = SKSpriteNode(texture: createPipeCheckpointTexture())
+            pipeCheckpointSprite.position = pointForColumn(pipeCheckpoint.tile.column, row: pipeCheckpoint.tile.row)
+            levelPreviewLayer.addChild(pipeCheckpointSprite)
+            
+            if prevPipeCheckpoint != nil {
+                
+                let prevPipeCheckpointPosition = pointForColumn(prevPipeCheckpoint!.tile.column, row: prevPipeCheckpoint!.tile.row)
+                
+                let pipePath = CGPathCreateMutable()
+                CGPathMoveToPoint(pipePath, nil, prevPipeCheckpointPosition.x, prevPipeCheckpointPosition.y)
+                CGPathAddLineToPoint(pipePath, nil, pipeCheckpointSprite.position.x, pipeCheckpointSprite.position.y)
+                
+                let pipeShapeNode = SKShapeNode(path: pipePath)
+                pipeShapeNode.lineWidth = tileSize/1.5
+                pipeShapeNode.strokeColor = UIColor(red: 0.922, green: 0.000, blue: 0.000, alpha: 1.000)
+                levelPreviewLayer.addChild(pipeShapeNode)
+            }
+        }
+    }
+    
     func createPipeTipLinkPath() {
         
         pipeTipLinkPath = CGPathCreateMutable()
@@ -358,6 +414,30 @@ class GameScene: SKScene {
         
         return createPipeCheckpointTexture()
     }
+    
+    /*func createCurrentLevelPreviewTexture() -> SKTexture? {
+        
+        let size: CGSize = CGSize(width: tileSize, height: tileSize)
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: CGFloat(currentLevel.colsCount) * tileSize, height: CGFloat(currentLevel.rowsCount) * tileSize), false, UIScreen.mainScreen().scale)
+        
+        let ctx = UIGraphicsGetCurrentContext()
+        
+        for pipeCheckpoint in currentLevel.pipeCheckpoints {
+
+            let pipeCheckpointPoint = pointForColumn(pipeCheckpoint.tile.column, row: pipeCheckpoint.tile.row)
+            CGContextTranslateCTM(ctx, pipeCheckpointPoint.x, pipeCheckpointPoint.y);
+            
+            let circleRect = CGRectMake(size.width/6, size.width/6, size.width/1.5, size.height/1.5)
+            CGContextSetFillColorWithColor(ctx, UIColor(red: 0.922, green: 0.000, blue: 0.000, alpha: 1.000).CGColor)
+            CGContextFillEllipseInRect(ctx, circleRect)
+        }
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return SKTexture(image: image)
+    }*/
 }
 
 class GameSceneMetrics {
