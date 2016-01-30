@@ -19,6 +19,8 @@
 		7E47C6A81C5D0E5B0030429B /* move.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6A51C5D0D690030429B /* move.m4a */; };
 		7E47C6A91C5D0E5B0030429B /* right.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6A61C5D0D690030429B /* right.m4a */; };
 		7E47C6AA1C5D0E5B0030429B /* wrong.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6A71C5D0D690030429B /* wrong.m4a */; };
+		7E47C6AC1C5D22270030429B /* level-2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6AB1C5D22270030429B /* level-2.txt */; };
+		7E47C6AE1C5D299C0030429B /* level-3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6AD1C5D299C0030429B /* level-3.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		7E47C6A51C5D0D690030429B /* move.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = move.m4a; sourceTree = "<group>"; };
 		7E47C6A61C5D0D690030429B /* right.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = right.m4a; sourceTree = "<group>"; };
 		7E47C6A71C5D0D690030429B /* wrong.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = wrong.m4a; sourceTree = "<group>"; };
+		7E47C6AB1C5D22270030429B /* level-2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "level-2.txt"; sourceTree = "<group>"; };
+		7E47C6AD1C5D299C0030429B /* level-3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "level-3.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,8 @@
 			isa = PBXGroup;
 			children = (
 				7E47C69A1C5C0F2A0030429B /* level-1.txt */,
+				7E47C6AB1C5D22270030429B /* level-2.txt */,
+				7E47C6AD1C5D299C0030429B /* level-3.txt */,
 			);
 			name = Levels;
 			sourceTree = "<group>";
@@ -184,9 +190,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E47C6A81C5D0E5B0030429B /* move.m4a in Resources */,
+				7E47C6AE1C5D299C0030429B /* level-3.txt in Resources */,
 				7E47C6A91C5D0E5B0030429B /* right.m4a in Resources */,
 				7E47C6AA1C5D0E5B0030429B /* wrong.m4a in Resources */,
 				7E47C68A1C5BFF400030429B /* Assets.xcassets in Resources */,
+				7E47C6AC1C5D22270030429B /* level-2.txt in Resources */,
 				7E47C69B1C5C0F2A0030429B /* level-1.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

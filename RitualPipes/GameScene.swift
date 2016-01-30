@@ -55,6 +55,7 @@ class GameScene: SKScene {
         gridLayer = SKSpriteNode(texture: createGridTexture())
         gridLayer!.zPosition = 1
         self.addChild(gridLayer!)
+        gridLayer?.alpha = 0
         
         let blocksLayerPosition = computeBlocksLayerPosition()
         
@@ -107,13 +108,67 @@ class GameScene: SKScene {
                 
                 currentPipeCheckpoint = pipeCheckpoint
                 createPipeTipLinkPath()
-                currentPipeCheckpointCounter++
                 
                 self.runAction(rightSound)
+                
+                if  currentPipeCheckpointCounter == currentLevelMaxOrder() - 1 {
+                    win()
+                }
+                
+                currentPipeCheckpointCounter++
         } else {
             reset()
+            pipesLayer.removeAllChildren()
+            setupPipes()
             self.runAction(wrongSound)
         }
+    }
+    
+    func win() {
+        
+        userInteractionEnabled = false
+        
+        if (timer != nil) {
+            timer?.invalidate()
+        }
+        
+        dragAllowed = false
+        
+        if pipeTip != nil {
+            pipeTip!.removeFromParent()
+            pipeTipLinkPath = CGPathCreateMutable()
+            pipeTipLinkShapeNode.path = pipeTipLinkPath
+        }
+        
+        let repeatedWinBlink = SKAction.repeatAction(SKAction.sequence([
+            SKAction.runBlock({
+                self.pipesLayer.hidden = true
+            }),
+            SKAction.waitForDuration(0.23),
+            SKAction.runBlock({
+                self.pipesLayer.hidden = false
+            }),
+            SKAction.waitForDuration(0.23)]), count: 2)
+        
+        self.runAction(SKAction.group([repeatedWinBlink, rightSound]), completion: { completed in
+            
+            if self.currentLevelIdx >= 3 {
+                self.currentLevelIdx = 0
+            }
+            self.loadNextLevel()
+            
+            self.userInteractionEnabled = true
+        })
+    }
+    
+    func currentLevelMaxOrder() -> Int {
+        var maxOrder = 0
+        for pipeCheckpoint in currentLevel.pipeCheckpoints {
+            if pipeCheckpoint.order > maxOrder {
+                maxOrder = pipeCheckpoint.order
+            }
+        }
+        return maxOrder
     }
     
     func nextModelPipeCheckpoint() -> PipeCheckpoint? {
@@ -167,7 +222,11 @@ class GameScene: SKScene {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        reset()
+        if  currentPipeCheckpointCounter != currentLevelMaxOrder() {
+            reset()
+            pipesLayer.removeAllChildren()
+            setupPipes()
+        }
     }
     
     func reset() {
@@ -177,16 +236,13 @@ class GameScene: SKScene {
         
         if pipeTip != nil {
             pipeTip!.removeFromParent()
-            pipeTipLinkShapeNode.path = CGPathCreateMutable()
+            pipeTipLinkPath = CGPathCreateMutable()
+            pipeTipLinkShapeNode.path = pipeTipLinkPath
         }
-        
         
         if (timer != nil) {
             timer?.invalidate()
         }
-        
-        pipesLayer.removeAllChildren()
-        setupPipes()
     }
    
     override func update(currentTime: CFTimeInterval) {
