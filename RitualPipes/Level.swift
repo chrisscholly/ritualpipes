@@ -7,34 +7,36 @@
 //
 
 import Foundation
+import UIKit
 
 class Level {
     
-    var order: [ character: int ] {
-    return [
-    "0": 0,
-    "1": 1,
-    "2": 2,
-    "3": 3,
-    "4": 4,
-    "5": 5,
-    "6": 6,
-    "7": 7,
-    "8": 8,
-    "9": 9,
-    "⃐": 0,
-    "⃑": 1,
-    "⃒": 2,
-    "⃓": 3,
-    "⃔": 4,
-    "⃕": 5,
-    "⃖": 6,
-    "⃗": 7,
-    "⃘": 8,
-    "⃙": 9,
-    ]
+    var orderMap: [ UnicodeScalar: Int ] {
+        return [
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7": 7,
+            "8": 8,
+            "9": 9,
+            "⃐": 0,
+            "⃑": 1,
+            "⃒": 2,
+            "⃓": 3,
+            "⃔": 4,
+            "⃕": 5,
+            "⃖": 6,
+            "⃗": 7,
+            "⃘": 8,
+            "⃙": 9,
+        ]
     }
     var idx: Int = 0
+    var color: UIColor = UIColor.clearColor()
     
     var colsCount: Int = 0
     var rowsCount: Int = 0
@@ -84,18 +86,7 @@ class Level {
                                 
                                 for scalar in strValue.unicodeScalars {
                                     
-                                    var intVal: Int?
-                                    
-                                    if scalar == "⃖" {
-                                        intVal = 6
-                                    } else if scalar == "3" {
-                                        intVal = 3
-                                    } else if scalar == "⃗" {
-                                        intVal = 7
-                                    } else if scalar == "0" {
-                                        intVal = 0
-                                    }
-                                    pipeCheckpoints.append(PipeCheckpoint(tile: Tile2D(column: column, row: tileRow), order: intVal!))
+                                    pipeCheckpoints.append(PipeCheckpoint(tile: Tile2D(column: column, row: tileRow), order: orderMap[scalar]!))
                                 }
                                 
                             } else {
@@ -105,6 +96,23 @@ class Level {
                         }
                     }
                 }
+            }
+            
+            switch idx {
+            case 1:
+                color = UIColor(255, 0, 240) // magenta
+                break
+            case 2:
+                color = UIColor(0, 255, 246) // cyan
+                break
+            case 3:
+                color = UIColor(252, 255, 0) // yellow
+                break
+            case 4:
+                color = UIColor(30, 255, 0) // green
+                break
+            default:
+                break
             }
         } else {
             print("Level error! Level does not exist.")

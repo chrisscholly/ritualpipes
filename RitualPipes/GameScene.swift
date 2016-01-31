@@ -289,7 +289,7 @@ class GameScene: SKScene {
         }
         
         pipeTipLinkShapeNode.lineWidth = tileSize/1.5
-        pipeTipLinkShapeNode.strokeColor = UIColor(red: 0.922, green: 0.000, blue: 0.000, alpha: 1.000)
+        pipeTipLinkShapeNode.strokeColor = currentLevel.color
         pipesLayer.addChild(pipeTipLinkShapeNode)
     }
     
@@ -321,7 +321,7 @@ class GameScene: SKScene {
                 
                 let pipeShapeNode = SKShapeNode(path: pipePath)
                 pipeShapeNode.lineWidth = tileSize/1.5
-                pipeShapeNode.strokeColor = UIColor(red: 0.922, green: 0.000, blue: 0.000, alpha: 1.000)
+                pipeShapeNode.strokeColor = currentLevel.color
                 levelPreviewLayer.addChild(pipeShapeNode)
             }
         }
@@ -379,7 +379,7 @@ class GameScene: SKScene {
         
         for i in 0..<currentLevel.rowsCount {
             for j in 0..<currentLevel.colsCount {
-                let evenColor = UIColor(red: 0.706, green: 0.706, blue: 0.706, alpha: 1.000)
+                let evenColor = currentLevel.color
                 let oddColor = evenColor.colorWithHighlight(0.08)
                 CGContextSetFillColorWithColor(ctx, (i % 2 == 0 ? j : (j + 1)) % 2 == 0 ? evenColor.CGColor : oddColor.CGColor)
                 CGContextFillRect(ctx, CGRectMake(CGFloat(j) * tileSize, CGFloat(i) * tileSize, tileSize, tileSize))
@@ -401,7 +401,7 @@ class GameScene: SKScene {
         let ctx = UIGraphicsGetCurrentContext()
         
         let circleRect = CGRectMake(size.width/6, size.width/6, size.width/1.5, size.height/1.5)
-        CGContextSetFillColorWithColor(ctx, UIColor(red: 0.922, green: 0.000, blue: 0.000, alpha: 1.000).CGColor)
+        CGContextSetFillColorWithColor(ctx, currentLevel.color.CGColor)
         CGContextFillEllipseInRect(ctx, circleRect)
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -414,30 +414,6 @@ class GameScene: SKScene {
         
         return createPipeCheckpointTexture()
     }
-    
-    /*func createCurrentLevelPreviewTexture() -> SKTexture? {
-        
-        let size: CGSize = CGSize(width: tileSize, height: tileSize)
-        
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: CGFloat(currentLevel.colsCount) * tileSize, height: CGFloat(currentLevel.rowsCount) * tileSize), false, UIScreen.mainScreen().scale)
-        
-        let ctx = UIGraphicsGetCurrentContext()
-        
-        for pipeCheckpoint in currentLevel.pipeCheckpoints {
-
-            let pipeCheckpointPoint = pointForColumn(pipeCheckpoint.tile.column, row: pipeCheckpoint.tile.row)
-            CGContextTranslateCTM(ctx, pipeCheckpointPoint.x, pipeCheckpointPoint.y);
-            
-            let circleRect = CGRectMake(size.width/6, size.width/6, size.width/1.5, size.height/1.5)
-            CGContextSetFillColorWithColor(ctx, UIColor(red: 0.922, green: 0.000, blue: 0.000, alpha: 1.000).CGColor)
-            CGContextFillEllipseInRect(ctx, circleRect)
-        }
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return SKTexture(image: image)
-    }*/
 }
 
 class GameSceneMetrics {
