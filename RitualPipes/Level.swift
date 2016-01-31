@@ -103,10 +103,10 @@ class Level {
                 color = UIColor(255, 0, 240) // magenta
                 break
             case 2:
-                color = UIColor(0, 255, 246) // cyan
+                color = UIColor(252, 255, 0) // yellow
                 break
             case 3:
-                color = UIColor(252, 255, 0) // yellow
+                color = UIColor(red: 0.922, green: 0, blue: 0, alpha: 1) // red
                 break
             case 4:
                 color = UIColor(30, 255, 0) // green
