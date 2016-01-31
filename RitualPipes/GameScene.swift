@@ -59,7 +59,7 @@ class GameScene: SKScene {
         gridLayer = SKSpriteNode(texture: createGridTexture())
         gridLayer!.zPosition = 1
         self.addChild(gridLayer!)
-        gridLayer?.alpha = 0
+        gridLayer?.hidden = true
         
         let blocksLayerPosition = computeBlocksLayerPosition()
         
@@ -90,9 +90,39 @@ class GameScene: SKScene {
         if let touch = touches.first as UITouch? {
             
             touchLocation = touch.locationInNode(pipesLayer)
-            let touchedNode = pipesLayer.nodeAtPoint(touchLocation)
             
-            dragAllowed = touchedNode == currentPipeCheckpoint!
+            let (success, touchCol, touchRow) = convertPoint(touchLocation)
+            
+            if !success {
+                return
+            }
+            
+            let (currentPipeCheckpointCol, currentPipeCheckpointRow) = convertPoint2(currentPipeCheckpoint!.position)
+            
+            let allowedGridOffsets = [
+                [-1, -1],
+                [0, -1],
+                [1, -1],
+                [-1, 0],
+                [0, 0],
+                [1, 0],
+                [-1, 1],
+                [0, 1],
+                [1, 1]
+            ]
+            
+            for allowedGridOffset in allowedGridOffsets {
+                
+                let allowedGridOffsetCol = allowedGridOffset[0]
+                let allowedGridOffsetRow = allowedGridOffset[1]
+                
+                if touchCol == currentPipeCheckpointCol + allowedGridOffsetCol &&
+                    touchRow == currentPipeCheckpointRow + allowedGridOffsetRow {
+                 
+                        dragAllowed = true
+                        break
+                }
+            }
             
             if dragAllowed {
                 
@@ -379,7 +409,7 @@ class GameScene: SKScene {
         
         for i in 0..<currentLevel.rowsCount {
             for j in 0..<currentLevel.colsCount {
-                let evenColor = currentLevel.color
+                let evenColor = UIColor.grayColor()
                 let oddColor = evenColor.colorWithHighlight(0.08)
                 CGContextSetFillColorWithColor(ctx, (i % 2 == 0 ? j : (j + 1)) % 2 == 0 ? evenColor.CGColor : oddColor.CGColor)
                 CGContextFillRect(ctx, CGRectMake(CGFloat(j) * tileSize, CGFloat(i) * tileSize, tileSize, tileSize))
