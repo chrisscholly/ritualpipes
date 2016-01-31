@@ -174,7 +174,7 @@ class GameScene: SKScene {
         
         self.runAction(SKAction.sequence([repeatedWinBlink, SKAction.waitForDuration(0.7)]), completion: { completed in
             
-            if self.currentLevelIdx >= 3 {
+            if self.currentLevelIdx >= 4 {
                 self.currentLevelIdx = 0
             }
             self.loadNextLevel()
