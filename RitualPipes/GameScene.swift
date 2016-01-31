@@ -37,7 +37,7 @@ class GameScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         
-        self.backgroundColor = SKColor.whiteColor()
+        self.backgroundColor = SKColor.blackColor()
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
         pipesLayer.zPosition = 2
@@ -172,7 +172,7 @@ class GameScene: SKScene {
             }),
             SKAction.waitForDuration(0.23)]), count: 3)
         
-        self.runAction(SKAction.sequence([SKAction.group([repeatedWinBlink, rightSound]), SKAction.waitForDuration(0.7)]), completion: { completed in
+        self.runAction(SKAction.sequence([repeatedWinBlink, SKAction.waitForDuration(0.7)]), completion: { completed in
             
             if self.currentLevelIdx >= 3 {
                 self.currentLevelIdx = 0

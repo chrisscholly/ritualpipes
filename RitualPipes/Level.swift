@@ -53,7 +53,31 @@ class Level {
                     
                     for (column, value) in row.characters.enumerate() {
                         if (value != ".") {
-                            pipeCheckpoints.append(PipeCheckpoint(tile: Tile2D(column: column, row: tileRow), order: Int("\(value)")!))
+                            
+                            let strValue = "\(value)"
+                            
+                            if strValue.unicodeScalars.count > 1 {
+                                
+                                for scalar in strValue.unicodeScalars {
+                                    
+                                    var intVal: Int?
+                                    
+                                    if scalar == "⃖" {
+                                        intVal = 6
+                                    } else if scalar == "3" {
+                                        intVal = 3
+                                    } else if scalar == "⃗" {
+                                        intVal = 7
+                                    } else if scalar == "0" {
+                                        intVal = 0
+                                    }
+                                    pipeCheckpoints.append(PipeCheckpoint(tile: Tile2D(column: column, row: tileRow), order: intVal!))
+                                }
+                                
+                            } else {
+                            
+                                pipeCheckpoints.append(PipeCheckpoint(tile: Tile2D(column: column, row: tileRow), order: Int("\(value)")!))
+                            }
                         }
                     }
                 }

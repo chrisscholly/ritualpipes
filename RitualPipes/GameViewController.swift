@@ -28,8 +28,8 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         
         // Debug
-        skView.showsFPS = true
-        skView.showsNodeCount = true
+//        skView.showsFPS = true
+//        skView.showsNodeCount = true
         
         // Create/configure the scene
         let scene = GameScene(size: skView.bounds.size)
