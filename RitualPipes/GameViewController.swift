@@ -12,6 +12,8 @@ import SpriteKit
 class GameViewController: UIViewController {
     
     var skView: SKView!
+    var scene: GameScene!
+    var gameSubControlsView: GameSubControlsView!
     
     override func loadView() {
         super.loadView()
@@ -32,9 +34,33 @@ class GameViewController: UIViewController {
 //        skView.showsNodeCount = true
         
         // Create/configure the scene
-        let scene = GameScene(size: skView.bounds.size)
+        scene = GameScene(size: skView.bounds.size)
         scene.scaleMode = .AspectFill
         skView.presentScene(scene)
+        
+        // Sub controls view
+        gameSubControlsView = GameSubControlsView(frame: CGRectMake(0, 0, skView.bounds.width, 0))
+        gameSubControlsView.goalButton.addTarget(self, action: "showLevelGoal", forControlEvents: .TouchDown)
+        gameSubControlsView.goalButton.addTarget(self, action: "hideLevelGoal", forControlEvents: .TouchUpInside)
+        gameSubControlsView.goalButton.addTarget(self, action: "hideLevelGoal", forControlEvents: .TouchUpOutside)
+        gameSubControlsView.goalButton.multipleTouchEnabled = false
+        skView.addSubview(gameSubControlsView)
+        
+        gameSubControlsView.sizeToFit()
+        gameSubControlsView.frame.origin.y = skView.bounds.height - gameSubControlsView.bounds.height
+    }
+    
+    func showLevelGoal() {
+        scene.levelPreviewLayer.hidden = false
+        gameSubControlsView.goalButton.hidden = true
+        scene.userInteractionEnabled = false
+    }
+    
+    func hideLevelGoal() {
+        
+        scene.levelPreviewLayer.hidden = true
+        gameSubControlsView.goalButton.hidden = false
+        scene.userInteractionEnabled = true
     }
     
     override func shouldAutorotate() -> Bool {

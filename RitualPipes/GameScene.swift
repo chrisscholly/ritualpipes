@@ -133,6 +133,11 @@ class GameScene: SKScene {
                 createPipeTipLinkPath()
                 
                 timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "timerUpdate", userInfo: nil, repeats: true)
+                
+                if let gameViewViewController = UIApplication.sharedApplication().keyWindow?.rootViewController as? GameViewController {
+                    gameViewViewController.gameSubControlsView.goalButton.hidden = true
+                }
+                self.userInteractionEnabled = false
             }
         }
     }
@@ -279,6 +284,11 @@ class GameScene: SKScene {
             pipesLayer.removeAllChildren()
             setupPipes()
         }
+        
+        if let gameViewViewController = UIApplication.sharedApplication().keyWindow?.rootViewController as? GameViewController {
+            gameViewViewController.gameSubControlsView.goalButton.hidden = false
+        }
+        self.userInteractionEnabled = true
     }
     
     func reset() {

@@ -22,6 +22,10 @@
 		7E47C6AC1C5D22270030429B /* level-2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6AB1C5D22270030429B /* level-2.txt */; };
 		7E47C6AE1C5D299C0030429B /* level-3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6AD1C5D299C0030429B /* level-3.txt */; };
 		7E47C6B01C5D9D920030429B /* level-4.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7E47C6AF1C5D9D920030429B /* level-4.txt */; };
+		7E47C6B21C5E258B0030429B /* GameSubControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E47C6B11C5E258B0030429B /* GameSubControlsView.swift */; };
+		7E47C6B41C5E26B50030429B /* TGStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E47C6B31C5E26B50030429B /* TGStyleKit.swift */; };
+		7E47C6B71C5E29E30030429B /* TargetIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E47C6B51C5E29E30030429B /* TargetIconView.swift */; };
+		7E47C6B81C5E29E30030429B /* TGIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E47C6B61C5E29E30030429B /* TGIconView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +46,10 @@
 		7E47C6AB1C5D22270030429B /* level-2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "level-2.txt"; sourceTree = "<group>"; };
 		7E47C6AD1C5D299C0030429B /* level-3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "level-3.txt"; sourceTree = "<group>"; };
 		7E47C6AF1C5D9D920030429B /* level-4.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "level-4.txt"; sourceTree = "<group>"; };
+		7E47C6B11C5E258B0030429B /* GameSubControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSubControlsView.swift; sourceTree = "<group>"; };
+		7E47C6B31C5E26B50030429B /* TGStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGStyleKit.swift; sourceTree = "<group>"; };
+		7E47C6B51C5E29E30030429B /* TargetIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TargetIconView.swift; sourceTree = "<group>"; };
+		7E47C6B61C5E29E30030429B /* TGIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TGIconView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +88,7 @@
 				7E47C6951C5C0D0D0030429B /* Views */,
 				7E47C6941C5C0CFB0030429B /* Controllers */,
 				7E47C67E1C5BFF400030429B /* AppDelegate.swift */,
+				7E47C6B31C5E26B50030429B /* TGStyleKit.swift */,
 				7E47C6891C5BFF400030429B /* Assets.xcassets */,
 				7E47C68E1C5BFF400030429B /* Info.plist */,
 				7E47C69E1C5C0FD60030429B /* Extensions.swift */,
@@ -98,7 +107,10 @@
 		7E47C6951C5C0D0D0030429B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7E47C6B51C5E29E30030429B /* TargetIconView.swift */,
+				7E47C6B61C5E29E30030429B /* TGIconView.swift */,
 				7E47C6821C5BFF400030429B /* GameScene.swift */,
+				7E47C6B11C5E258B0030429B /* GameSubControlsView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -211,12 +223,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E47C69D1C5C0F510030429B /* Tile2D.swift in Sources */,
+				7E47C6B41C5E26B50030429B /* TGStyleKit.swift in Sources */,
+				7E47C6B71C5E29E30030429B /* TargetIconView.swift in Sources */,
 				7E47C69F1C5C0FD60030429B /* Extensions.swift in Sources */,
 				7E47C6831C5BFF400030429B /* GameScene.swift in Sources */,
 				7E47C6851C5BFF400030429B /* GameViewController.swift in Sources */,
 				7E47C6A31C5C18300030429B /* PipeCheckpoint.swift in Sources */,
 				7E47C6981C5C0E500030429B /* Level.swift in Sources */,
 				7E47C67F1C5BFF400030429B /* AppDelegate.swift in Sources */,
+				7E47C6B81C5E29E30030429B /* TGIconView.swift in Sources */,
+				7E47C6B21C5E258B0030429B /* GameSubControlsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
