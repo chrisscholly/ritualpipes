@@ -13,6 +13,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+//    static var showTouchesWindow: GSTouchesShowingWindow? = {
+//        return GSTouchesShowingWindow(frame: UIScreen.mainScreen().bounds)
+//    }()
+//
+//    var window: UIWindow? = showTouchesWindow
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
