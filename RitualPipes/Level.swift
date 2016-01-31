@@ -10,6 +10,30 @@ import Foundation
 
 class Level {
     
+    var order: [ character: int ] {
+    return [
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9,
+    "⃐": 0,
+    "⃑": 1,
+    "⃒": 2,
+    "⃓": 3,
+    "⃔": 4,
+    "⃕": 5,
+    "⃖": 6,
+    "⃗": 7,
+    "⃘": 8,
+    "⃙": 9,
+    ]
+    }
     var idx: Int = 0
     
     var colsCount: Int = 0
